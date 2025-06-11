@@ -1,14 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:verblet/core/sizes.dart';
 import 'package:verblet/core/theme/app_pallete.dart';
+import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:verblet/features/auth/presentation/pages/login_page.dart';
 import 'package:verblet/features/auth/presentation/widgets/auth_field.dart';
 
 class SignupPage extends StatefulWidget {
-  static  route()=> MaterialPageRoute(builder: (context)=>SignupPage());
+  static route() => MaterialPageRoute(builder: (context) => SignupPage());
+
   const SignupPage({super.key});
 
   @override
@@ -16,6 +19,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
@@ -23,7 +27,8 @@ class _SignupPageState extends State<SignupPage> {
 
 
   @override
-  void dispose(){
+  void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmController.dispose();
@@ -56,50 +61,86 @@ class _SignupPageState extends State<SignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: AppSizes(context).hp(6),),
-                    Text('Sign up to your \nAccount', style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 30),textAlign: TextAlign.center,),
+                    Text('Sign up to your \nAccount', style: Theme
+                        .of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .copyWith(fontSize: 30), textAlign: TextAlign.center,),
                     SizedBox(height: AppSizes(context).hp(1),),
-                    Text('Register by using your email and a password to get the latest news', style: Theme.of(context).textTheme.bodyMedium, textAlign: TextAlign.center,),
+                    Text(
+                      'Register by using your email and a password to get the latest news',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyMedium, textAlign: TextAlign.center,),
                     SizedBox(height: AppSizes(context).hp(2),),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: AppSizes(context).wp(5), vertical:AppSizes(context).hp(4)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppSizes(context).wp(5),
+                          vertical: AppSizes(context).hp(4)),
                       decoration: BoxDecoration(
-                        color: MyColors.primaryBackground,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: MyColors.black.withOpacity(0.1),
-                            blurRadius: 10.0,
-                            spreadRadius: 2.0,
-                            offset: Offset(0, 4)
-                          )
-                        ]
+                          color: MyColors.primaryBackground,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                                color: MyColors.black.withOpacity(0.1),
+                                blurRadius: 10.0,
+                                spreadRadius: 2.0,
+                                offset: Offset(0, 4)
+                            )
+                          ]
                       ),
                       child: Form(
-                        key: formKey                   ,
-                        child:  FadeInUp(
+                        key: formKey,
+                        child: FadeInUp(
                           duration: Duration(milliseconds: 500),
                           delay: Duration(milliseconds: 300),
                           child: Column(
                             children: [
-                              MyField(hintText: 'email', myIcon: Iconsax.direct_right, isPassword: false, controller: emailController,),
+                              MyField(hintText: 'Name',
+                                myIcon: Iconsax.direct_right,
+                                isPassword: false,
+                                controller: nameController, ),
                               SizedBox(height: AppSizes(context).hp(2),),
-                              MyField(hintText: 'password', myIcon: Iconsax.password_check, controller: passwordController,),
+                              MyField(hintText: 'Email',
+                                myIcon: Iconsax.direct_right,
+                                isPassword: false,
+                                controller: emailController, isEmail: true,),
                               SizedBox(height: AppSizes(context).hp(2),),
-                              MyField(hintText: 'Confirm password', myIcon: Iconsax.password_check, controller: confirmController,),
+                              MyField(hintText: 'Password',
+                                myIcon: Iconsax.password_check,
+                                controller: passwordController,),
+                              SizedBox(height: AppSizes(context).hp(2),),
+                              MyField(hintText: 'Confirm password',
+                                myIcon: Iconsax.password_check,
+                                controller: confirmController,),
+
                               /// Remember Me and Forgot Password
                               ///
                               SizedBox(height: AppSizes(context).hp(1.2),),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
                                 children: [
+
                                   ///Remember Me
                                   Row(
                                     children: [
-                                      Checkbox(activeColor:MyColors.primary,value: true, onChanged: (value){}),  Text('Remember Me', style: Theme.of(context).textTheme.labelLarge,),
+                                      Checkbox(activeColor: MyColors.primary,
+                                          value: true,
+                                          onChanged: (value) {}),
+                                      Text('Remember Me', style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .labelLarge,),
                                     ],
                                   ),
+
                                   /// Forgot Password
-                                  TextButton(onPressed: (){}, child: const Text('Forgot Password',style: TextStyle(color: MyColors.primary),)),
+                                  TextButton(onPressed: () {},
+                                      child: const Text('Forgot Password',
+                                        style: TextStyle(
+                                            color: MyColors.primary),)),
 
                                 ],
                               ),
@@ -107,7 +148,18 @@ class _SignupPageState extends State<SignupPage> {
                               FadeInUp(
                                   duration: Duration(milliseconds: 500),
                                   delay: Duration(milliseconds: 400),
-                                  child: SizedBox(width: double.infinity, child: ElevatedButton(onPressed: (){}, child: const Text('signIn',)))),
+                                  child: SizedBox(width: double.infinity,
+                                      child: ElevatedButton(onPressed: () {
+                                        if (formKey.currentState!.validate()) {
+                                          context.read<AuthBloc>().add(
+                                              AuthSignUp(
+                                                  name: nameController.text,
+                                                  email: emailController.text
+                                                      .trim(),
+                                                  password: passwordController
+                                                      .text.trim()));
+                                        }
+                                      }, child: const Text('signIn',)))),
 
                             ],
                           ),
@@ -121,10 +173,25 @@ class _SignupPageState extends State<SignupPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Already have an account?', style: Theme.of(context).textTheme.bodyLarge,),
-                          SizedBox(width:  AppSizes(context).wp(2),),
-                          TextButton(style:TextButton.styleFrom(
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap, minimumSize: Size.zero, padding: EdgeInsets.zero, foregroundColor: MyColors.primary), onPressed: (){Navigator.pushReplacement(context, LoginPage.route());}, child: Text('Log In', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: MyColors.primary),)),
+                          Text('Already have an account?', style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyLarge,),
+                          SizedBox(width: AppSizes(context).wp(2),),
+                          TextButton(style: TextButton.styleFrom(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              foregroundColor: MyColors.primary),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context, LoginPage.route());
+                              },
+                              child: Text('Log In', style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(color: MyColors.primary),)),
                         ],
                       ),
                     )

@@ -7,7 +7,7 @@ import 'package:verblet/core/theme/app_pallete.dart';
 class MyField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
-  final bool isPassword;
+  final bool isPassword, isEmail;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final IconData myIcon;
@@ -20,7 +20,7 @@ class MyField extends StatelessWidget {
     this.isPassword = true,
     this.keyboardType,
     this.inputFormatters,
-    super.key,
+    super.key, this.isEmail = false,
   });
 
   @override
@@ -45,9 +45,13 @@ class MyField extends StatelessWidget {
       validator: (value){
         if(isPassword){
           return value!.length < 6 ? 'Password must be 6+ characters' : null;
-        }else {
+        }else if(isEmail){
           return value!.isEmpty || !value.contains('@')
               ? 'Enter a valid email'
+              : null;
+        }else {
+          return value!.isEmpty
+              ? '$hintText is required'
               : null;
         }
       },
