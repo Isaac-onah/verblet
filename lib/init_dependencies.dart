@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:verblet/core/common/cubits/app_user.dart';
 import 'package:verblet/core/secrets/app_secrets.dart';
 import 'package:verblet/features/auth/data/datasources/auth_supabase.dart';
 import 'package:verblet/features/auth/data/repository/auth_repository_impl.dart';
@@ -15,7 +16,8 @@ Future<void> initDependencies() async{
 _initAuth();
   final supabase = await Supabase.initialize(url: AppSecrets.supabaseUrl, anonKey: AppSecrets.SupabaseAnonKey);
   serviceLocator.registerLazySingleton(() => supabase.client);
-
+ //core
+  serviceLocator.registerLazySingleton(()=>AppUserCubit());
 }
 
 void _initAuth(){
@@ -28,5 +30,5 @@ void _initAuth(){
   ..registerFactory(()=>UserLogin(serviceLocator()))
   ..registerFactory(()=>CurrentUser(serviceLocator()))
     //this is the Bloc
-  ..registerLazySingleton(() => AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator(), currentUser: serviceLocator()));
+  ..registerLazySingleton(() => AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator(), currentUser: serviceLocator(), appUserCubit: serviceLocator()));
 }
