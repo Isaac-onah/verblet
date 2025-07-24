@@ -4,6 +4,8 @@ import 'package:verblet/core/secrets/app_secrets.dart';
 import 'package:verblet/features/auth/data/datasources/auth_supabase.dart';
 import 'package:verblet/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:verblet/features/auth/domain/repository/auth_repository.dart';
+import 'package:verblet/features/auth/domain/usecases/current_user.dart';
+import 'package:verblet/features/auth/domain/usecases/user_login.dart';
 import 'package:verblet/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 
@@ -17,8 +19,14 @@ _initAuth();
 }
 
 void _initAuth(){
-  serviceLocator.registerFactory<AuthRemoteDataSource>(()=>AuthRemoteDataSourceImplementation(serviceLocator()));
-  serviceLocator.registerFactory<AuthRepository>(()=>AuthRepositoryImplementation(serviceLocator()));
-  serviceLocator.registerFactory(()=>UserSignUp(serviceLocator()));
-  serviceLocator.registerLazySingleton(() => AuthBloc(userSignUp: serviceLocator()));
+  //this is the data source
+  serviceLocator..registerFactory<AuthRemoteDataSource>(()=>AuthRemoteDataSourceImplementation(serviceLocator()))
+    //this is the repository
+  ..registerFactory<AuthRepository>(()=>AuthRepositoryImplementation(serviceLocator()))
+    //this is the use cases
+  ..registerFactory(()=>UserSignUp(serviceLocator()))
+  ..registerFactory(()=>UserLogin(serviceLocator()))
+  ..registerFactory(()=>CurrentUser(serviceLocator()))
+    //this is the Bloc
+  ..registerLazySingleton(() => AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator(), currentUser: serviceLocator()));
 }

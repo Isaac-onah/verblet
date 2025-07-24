@@ -1,17 +1,21 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:verblet/core/error/exceptions.dart';
+import 'package:verblet/features/auth/data/models/user_model.dart';
 
 abstract interface class AuthRemoteDataSource {
-  Future<String> signUpWithEmailPassword({
+  Session? get currentUserSession;
+  Future<UserModel> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
   });
 
-  Future<String> loginWithEmailPassword({
+  Future<UserModel> loginWithEmailPassword({
     required String email,
     required String password,
   });
+
+  Future<UserModel?> getCurrentUserData();
 }
 
 class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
@@ -19,7 +23,26 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
   AuthRemoteDataSourceImplementation(this.supabaseClient);
 
   @override
-  Future<String> signUpWithEmailPassword({
+  Session? get currentUserSession => supabaseClient.auth.currentSession;
+
+
+  @override
+  Future<UserModel?> getCurrentUserData() async{
+    try{
+      if (currentUserSession!=null) {
+        final userData = await supabaseClient.from('profiles').select().eq('id', currentUserSession!.user.id);
+        
+        return UserModel.fromJson(userData.first).copyWith(email: currentUserSession!.user.email);
+      }
+      return null;
+    }catch(e){
+      throw ServerException(e.toString());
+    }
+  }
+
+
+  @override
+  Future<UserModel> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
@@ -29,17 +52,26 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
       if(response.user == null){
         throw ServerException('user is null');
       }
-      return response.user!.id;
+      return UserModel.fromJson(response.user!.toJson());
     }catch(e){
       throw ServerException(e.toString());
     }
   }
 
   @override
-  Future<String> loginWithEmailPassword({
+  Future<UserModel> loginWithEmailPassword({
     required String email,
     required String password,
-  }) {
-    throw UnimplementedError();
+  }) async{
+    try{
+      final response = await supabaseClient.auth.signInWithPassword(password: password, email: email,);
+      if(response.user == null){
+        throw ServerException('user is null');
+      }
+      return UserModel.fromJson(response.user!.toJson());
+    }catch(e){
+      throw ServerException(e.toString());
+    }
   }
+
 }
