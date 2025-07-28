@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verblet/core/theme/app_pallete.dart';
 
 class MyChipTheme {
 
@@ -10,12 +11,13 @@ static ChipThemeData lightChipTheme = ChipThemeData(
 
   labelStyle: const TextStyle(color: Colors.black),
 
-  selectedColor: Colors.blue,
+  selectedColor: MyColors.primary,
 
   padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
 
   checkmarkColor: Colors.white,
-
+  color: MaterialStatePropertyAll(MyColors.primaryBackground),
+  side: BorderSide.none
 ); // Chip ThemeData
 
 static ChipThemeData darkChipTheme = const ChipThemeData(
@@ -24,12 +26,12 @@ static ChipThemeData darkChipTheme = const ChipThemeData(
 
   labelStyle: TextStyle (color: Colors.white),
 
-  selectedColor: Colors.blue,
+  selectedColor: MyColors.primary,
 
   padding: EdgeInsets.symmetric (horizontal: 12.0, vertical: 12),
 
   checkmarkColor: Colors.white,
-
+    color: MaterialStatePropertyAll(MyColors.primaryBackground)
 )
 
 ; // ChipThemeData

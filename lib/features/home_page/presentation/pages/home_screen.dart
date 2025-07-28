@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:verblet/features/blog_details/detail_screen.dart';
 import 'package:verblet/features/home_page/domain/entity.dart';
+import 'package:verblet/features/home_page/presentation/pages/add_new_blog.dart';
 import 'package:verblet/features/home_page/presentation/widgets/article_list_item.dart';
 import 'package:verblet/features/home_page/presentation/widgets/recomended_card.dart';
 
@@ -343,10 +344,17 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(width: 12),
           // Notification Icon with a dot
           IconButton(
+            icon: const Icon(Iconsax.additem, size: 32),
+            onPressed: () {
+              Navigator.push(context, AddNewBlog.route());
+            },
+          ),
+          // Notification Icon with a dot
+          IconButton(
             icon: Stack(
               clipBehavior: Clip.none,
               children: [
-                const Icon(Icons.notifications_none_outlined, size: 32),
+                const Icon(Iconsax.notification, size: 32),
                 Positioned(
                   top: 2,
                   right: 2,
