@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:verblet/features/blog_details/widget/author_info_row.dart';
 import 'package:verblet/features/blog_details/widget/circular_icon_button.dart';
 import 'package:verblet/features/blog_details/widget/like_button.dart';
-import 'package:verblet/features/home_page/domain/entity.dart';
+import 'package:verblet/features/home_page/domain/entity/blog_entity.dart';
 
 class ArticleScreen extends StatelessWidget {
    final Article article;

@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:verblet/core/device_utility.dart';
 import 'package:verblet/core/theme/app_pallete.dart';
+import 'package:verblet/features/home_page/presentation/widgets/blog_editor.dart';
 
 class AddNewBlog extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => AddNewBlog());
@@ -13,6 +16,27 @@ class AddNewBlog extends StatefulWidget {
 }
 
 class _AddNewBlogState extends State<AddNewBlog> {
+  final titleController = TextEditingController();
+  final contentController = TextEditingController();
+  List<String> selectedTopics = [];
+  File? image;
+
+  void selectImage() async {
+    final pickedImage = await pickImage();
+    if (pickedImage != null) {
+      setState(() {
+        image = pickedImage;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    contentController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,47 +50,111 @@ class _AddNewBlogState extends State<AddNewBlog> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: Column(
-          children: [
-            DottedBorder(
-                options: RoundedRectDottedBorderOptions(
-                  dashPattern: [16, 7],
-                  strokeWidth: 2,
-                  radius: Radius.circular(16),
-                  padding: EdgeInsets.all(16),
-                  color: MyColors.darkGrey,
-                ),
-                child: Container(
-                  height: 150,
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          child: Column(
+            children: [
+              image != null
+                  ? GestureDetector(
+                onTap: selectImage,
+                    child: SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.file(image!, fit: BoxFit.cover,))),
+                  )
+                  : GestureDetector(
+                      onTap: () {
+                        selectImage();
+                      },
+                      child: DottedBorder(
+                          options: RoundedRectDottedBorderOptions(
+                            dashPattern: [16, 7],
+                            strokeWidth: 2,
+                            radius: Radius.circular(16),
+                            padding: EdgeInsets.all(16),
+                            color: MyColors.darkGrey,
+                          ),
+                          child: Container(
+                            height: 150,
+                            width: double.infinity,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Iconsax.folder_open,
+                                  size: 50,
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text('Select your image')
+                              ],
+                            ),
+                          )),
+                    ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: [
-                      Icon(
-                        Iconsax.folder_open,
-                        size: 50,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text('Select your image')
-                    ],
+                      'Technology',
+                      'Fashion',
+                      'Education',
+                      'Entertainment',
+                    ]
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.only(right: 18.0),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (selectedTopics.contains(e)) {
+                                      selectedTopics.remove(e);
+                                    } else {
+                                      selectedTopics.add(e);
+                                    }
+                                    setState(() {});
+                                    print(selectedTopics);
+                                  },
+                                  child: Chip(
+                                    label: Text(
+                                      e,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: selectedTopics.contains(e)
+                                                  ? Colors.white
+                                                  : null),
+                                    ),
+                                    side: selectedTopics.contains(e)
+                                        ? null
+                                        : BorderSide(color: MyColors.grey),
+                                    color: selectedTopics.contains(e)
+                                        ? MaterialStatePropertyAll(
+                                            MyColors.primary)
+                                        : null,
+                                  )),
+                            ))
+                        .toList(),
                   ),
-                )),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: ['Technilogy', 'Fashion', 'Education', 'Entertainment',
-                  ].map((e) => Chip(label: Text(e))).toList(),
                 ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              BlogEditor(controller: titleController, hintHint: 'Blog Title'),
+              SizedBox(
+                height: 10,
+              ),
+              BlogEditor(
+                  controller: contentController, hintHint: 'Blog Content'),
+            ],
+          ),
         ),
       ),
     );

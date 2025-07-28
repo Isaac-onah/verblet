@@ -1,6 +1,6 @@
 // lib/widgets/article_list_item.dart
 import 'package:flutter/material.dart';
-import 'package:verblet/features/home_page/domain/entity.dart';
+import 'package:verblet/features/home_page/domain/entity/blog_entity.dart';
 
 class ArticleListItem extends StatelessWidget {
   final Article article;

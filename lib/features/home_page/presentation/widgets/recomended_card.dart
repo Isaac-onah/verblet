@@ -1,7 +1,7 @@
 // lib/widgets/recommended_card.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:verblet/features/home_page/domain/entity.dart';
+import 'package:verblet/features/home_page/domain/entity/blog_entity.dart';
 
 class RecommendedCard extends StatelessWidget {
   final Article article;

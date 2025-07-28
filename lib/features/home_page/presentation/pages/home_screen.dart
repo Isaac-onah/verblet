@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:verblet/features/blog_details/detail_screen.dart';
-import 'package:verblet/features/home_page/domain/entity.dart';
+import 'package:verblet/features/home_page/domain/entity/blog_entity.dart';
 import 'package:verblet/features/home_page/presentation/pages/add_new_blog.dart';
 import 'package:verblet/features/home_page/presentation/widgets/article_list_item.dart';
 import 'package:verblet/features/home_page/presentation/widgets/recomended_card.dart';
