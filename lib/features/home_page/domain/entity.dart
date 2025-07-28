@@ -7,6 +7,7 @@ class Article {
   final String authorImageUrl;
   final String date;
   final String views;
+  final String content;
 
   Article({
     required this.imageUrl,
@@ -16,5 +17,6 @@ class Article {
     required this.authorImageUrl,
     required this.date,
     required this.views,
+    required this.content,
   });
 }
