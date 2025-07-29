@@ -1,10 +1,11 @@
-// lib/widgets/recommended_card.dart
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:verblet/core/device_utility.dart';
 import 'package:verblet/features/home_page/domain/entity/blog_entity.dart';
 
 class RecommendedCard extends StatelessWidget {
-  final Article article;
+  final BlogPost article;
   final VoidCallback onTourched;
 
   const RecommendedCard({super.key, required this.article, required this.onTourched});
@@ -40,7 +41,7 @@ class RecommendedCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      article.category,
+                      article.topics.first,
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ),
@@ -90,16 +91,16 @@ class RecommendedCard extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(4), // Adjust this value
-          child: Image.network(article.authorImageUrl,width: 28,),
+          child: Image.network(article.imageUrl,width: 28,),
         ),
         const SizedBox(width: 8),
         Text(
-          'By: ${article.authorName}',
+          'By: ${article.posterName}',
           style: TextStyle(color: Colors.grey.shade700, fontSize: 13),
         ),
         const Spacer(),
         Text(
-          '${article.date} • ${article.views} views',
+          '${formatDate(article.createdAt)} • ${article.views} views',
           style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
         ),
       ],

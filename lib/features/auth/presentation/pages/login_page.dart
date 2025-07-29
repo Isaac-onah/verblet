@@ -11,6 +11,7 @@ import 'package:verblet/core/theme/app_pallete.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:verblet/features/auth/presentation/pages/signup_page.dart';
 import 'package:verblet/features/auth/presentation/widgets/auth_field.dart';
+import 'package:verblet/features/home_page/presentation/pages/home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => LoginPage());
@@ -45,6 +46,8 @@ class _LoginPageState extends State<LoginPage> {
                 listener: (context, state) {
                   if(state is AuthFailure){
                     showSnackBar(context, 'Oops', state.message);
+                  }else if(AuthState is AuthSuccess){
+                    Navigator.pushAndRemoveUntil(context, HomeScreen.route(), (route) => false);
                   }
                 },
                 builder: (context, state) {

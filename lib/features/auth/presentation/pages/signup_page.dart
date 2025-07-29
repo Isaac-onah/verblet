@@ -11,6 +11,7 @@ import 'package:verblet/core/theme/app_pallete.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:verblet/features/auth/presentation/pages/login_page.dart';
 import 'package:verblet/features/auth/presentation/widgets/auth_field.dart';
+import 'package:verblet/features/home_page/presentation/pages/home_screen.dart';
 
 class SignupPage extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => SignupPage());
@@ -43,22 +44,15 @@ class _SignupPageState extends State<SignupPage> {
       appBar: AppBar(),
       body: Stack(
         children: [
-          // Column(
-          //   children: [
-          //     Expanded(child: Container(
-          //       color: MyColors.primary,
-          //     )),
-          //     Expanded(child: Container(
-          //       color: Colors.white,
-          //     ))
-          //   ],
-          // ),
+
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes(context).wp(8)),
             child: BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
                if(state is AuthFailure){
                  showSnackBar(context, 'Oops', state.message);
+               }else if(AuthState is AuthSuccess){
+                 Navigator.pushAndRemoveUntil(context, HomeScreen.route(), (route) => false);
                }
               },
               builder: (context, state) {

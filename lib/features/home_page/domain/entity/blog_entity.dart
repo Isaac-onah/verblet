@@ -26,6 +26,7 @@ class BlogPost {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String posterId;
+  final String? posterName;
   final String title;
   final String content;
   final String imageUrl;
@@ -44,5 +45,6 @@ class BlogPost {
     required this.topics,
     required this.likes,
     required this.views,
+    this.posterName,
   });
 }

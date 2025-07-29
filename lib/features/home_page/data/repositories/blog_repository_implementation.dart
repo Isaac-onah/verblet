@@ -22,7 +22,6 @@ class BlogRepositoryImplementation implements BlogRepository {
       required String posterId,
       required List<String> topics}) async {
     try {
-      print(posterId);
       BlogModel blogModel = BlogModel(
           id: Uuid().v1(),
           createdAt: DateTime.now(),
@@ -42,10 +41,20 @@ class BlogRepositoryImplementation implements BlogRepository {
       final uploadedBlog = await blogRemoteDataSource.uploadBlog(blogModel);
       return right(uploadedBlog);
     } on ServerException catch (e) {
-      print(e.message);
       return left(Failure(e.message));
     }catch (e) {
-      print(e.toString());
+      return left(Failure('Unexpected error: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<BlogPost>>> getAllBlog() async {
+    try {
+      final blogs = await blogRemoteDataSource.getAllBlogs();
+      return right(blogs);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }catch (e) {
       return left(Failure('Unexpected error: ${e.toString()}'));
     }
   }

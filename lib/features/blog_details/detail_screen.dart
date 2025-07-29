@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:verblet/core/device_utility.dart';
 import 'package:verblet/features/blog_details/widget/author_info_row.dart';
 import 'package:verblet/features/blog_details/widget/circular_icon_button.dart';
 import 'package:verblet/features/blog_details/widget/like_button.dart';
 import 'package:verblet/features/home_page/domain/entity/blog_entity.dart';
 
 class ArticleScreen extends StatelessWidget {
-   final Article article;
+static route(BlogPost article) => MaterialPageRoute(builder: (context) => ArticleScreen(article: article,));
+  final BlogPost article;
   const ArticleScreen({super.key, required this.article});
 
   @override
@@ -18,38 +20,40 @@ class ArticleScreen extends StatelessWidget {
         likeCount: 285,
         onPressed: () {},
       ),
-      body: CustomScrollView(
-        slivers: [
-          _buildSliverAppBar(),
-          SliverToBoxAdapter(
-            child: Material(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-              color: Colors.white,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(20.0),
-                    topRight: const Radius.circular(20.0),
+      body: Scrollbar(
+        child: CustomScrollView(
+          slivers: [
+            _buildSliverAppBar(context),
+            SliverToBoxAdapter(
+              child: Material(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                color: Colors.white,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(20.0),
+                      topRight: const Radius.circular(20.0),
+                    ),
                   ),
-                ),
-                child: Text(article.content,
-                  style: GoogleFonts.sourceSerif4(
-                    fontSize: 18,
-                    height: 1.6,
-                    color: Colors.black87,
+                  child: Text(article.content,
+                    style: GoogleFonts.sourceSerif4(
+                      fontSize: 18,
+                      height: 1.6,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  SliverAppBar _buildSliverAppBar() {
+  SliverAppBar _buildSliverAppBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 300.0,
       backgroundColor: Colors.transparent,
@@ -60,7 +64,9 @@ class ArticleScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: CircularIconButton(
           icon: Icons.arrow_back,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       actions: [
@@ -105,8 +111,7 @@ class ArticleScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'New VR Headsets That Will Shape the Metaverse',
+                    Text(article.title,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 25,
@@ -128,14 +133,14 @@ class ArticleScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          'Jan 1, 2021 • 3344 views',
+                          '${formatDate(article.createdAt)} • 3344 views',
                           style: GoogleFonts.poppins(color: Colors.white70),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     AuthorInfoRow(
-                      authorName: 'Mason Eduard',
+                      authorName: article.posterName ?? '',
                       authorImageUrl: 'https://i.pravatar.cc/150?img=1',
                       onSharePressed: () {},
                     ),

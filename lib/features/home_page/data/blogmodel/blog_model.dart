@@ -6,12 +6,13 @@ class BlogModel extends BlogPost {
       required super.createdAt,
       required super.updatedAt,
       required super.posterId,
+      super.posterName,
       required super.title,
       required super.content,
       required super.imageUrl,
       required super.topics,
       required super.likes,
-      required super.views});
+      required super.views,});
 
   factory BlogModel.fromJson(Map<String, dynamic> json) {
       return BlogModel(
@@ -51,6 +52,7 @@ class BlogModel extends BlogPost {
       DateTime? createdAt,
       DateTime? updatedAt,
       String? posterId,
+      String? posterName,
       String? title,
       String? content,
       String? imageUrl,
@@ -63,6 +65,7 @@ class BlogModel extends BlogPost {
           createdAt: createdAt ?? this.createdAt,
           updatedAt: updatedAt ?? this.createdAt, // Update timestamp on modification
           posterId: posterId ?? this.posterId,
+          posterName: posterName ?? this.posterName,
           title: title ?? this.title,
           content: content ?? this.content,
           imageUrl: imageUrl ?? this.imageUrl,

@@ -4,17 +4,22 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 import 'package:verblet/core/common/entities/user.dart';
 import 'package:verblet/core/error/exceptions.dart';
 import 'package:verblet/core/error/failures.dart';
+import 'package:verblet/core/network/connection_checker.dart';
 import 'package:verblet/features/auth/data/datasources/auth_supabase.dart';
+import 'package:verblet/features/auth/data/models/user_model.dart';
 import 'package:verblet/features/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImplementation implements AuthRepository{
   final AuthRemoteDataSource remoteDataSource;
-
-  AuthRepositoryImplementation(this.remoteDataSource);
+final ConnectionChecker connectionChecker;
+  AuthRepositoryImplementation(this.remoteDataSource, this.connectionChecker);
 
   @override
   Future<Either<Failure, User>> currentUser() async{
     try{
+      if(!await (connectionChecker.isConnected)){
+          return left(Failure('User not logged in!'));
+      }
       final user = await remoteDataSource.getCurrentUserData();
       if(user == null){
         return left(Failure('User not logged in!'));
@@ -41,6 +46,9 @@ class AuthRepositoryImplementation implements AuthRepository{
 
   Future<Either<Failure, User>> _getUser(Future<User> Function() fn) async{
     try{
+      if(!await (connectionChecker.isConnected)){
+        return Either.left(Failure('No Internet Connection'));
+      }
       final user = await fn();
       return right(user);
     } on sb.AuthException catch(e){
