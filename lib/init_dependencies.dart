@@ -9,11 +9,17 @@ import 'package:verblet/features/auth/domain/usecases/current_user.dart';
 import 'package:verblet/features/auth/domain/usecases/user_login.dart';
 import 'package:verblet/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:verblet/features/home_page/data/datasources/remote_data_source.dart';
+import 'package:verblet/features/home_page/data/repositories/blog_repository_implementation.dart';
+import 'package:verblet/features/home_page/domain/repositories/blog_repository.dart';
+import 'package:verblet/features/home_page/domain/usecase/upload_blog.dart';
+import 'package:verblet/features/home_page/presentation/blogbloc/blog_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async{
 _initAuth();
+_initBlog();
   final supabase = await Supabase.initialize(url: AppSecrets.supabaseUrl, anonKey: AppSecrets.SupabaseAnonKey);
   serviceLocator.registerLazySingleton(() => supabase.client);
  //core
@@ -31,4 +37,15 @@ void _initAuth(){
   ..registerFactory(()=>CurrentUser(serviceLocator()))
     //this is the Bloc
   ..registerLazySingleton(() => AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator(), currentUser: serviceLocator(), appUserCubit: serviceLocator()));
+}
+
+void _initBlog(){
+  //this is the data source
+  serviceLocator..registerFactory<BlogRemoteDataSource>(()=>BlogRemoteDataSourceImplementation(serviceLocator()))
+    //this is the repository
+  ..registerFactory<BlogRepository>(()=>BlogRepositoryImplementation(serviceLocator()))
+    //this is the use cases
+  ..registerFactory(()=>UploadBlog(serviceLocator()))
+    //this is the Bloc
+  ..registerLazySingleton(() => BlogBloc(serviceLocator()));
 }

@@ -30,6 +30,7 @@ class BlogModel extends BlogPost {
 
   // Convert to JSON (e.g., when sending data to Supabase)
   Map<String, dynamic> toJson() {
+
       return {
           'id': id,
           'created_at': createdAt.toIso8601String(),
@@ -61,7 +62,7 @@ class BlogModel extends BlogPost {
           id: id ?? this.id,
           createdAt: createdAt ?? this.createdAt,
           updatedAt: updatedAt ?? this.createdAt, // Update timestamp on modification
-          posterId: posterId ?? this.id,
+          posterId: posterId ?? this.posterId,
           title: title ?? this.title,
           content: content ?? this.content,
           imageUrl: imageUrl ?? this.imageUrl,

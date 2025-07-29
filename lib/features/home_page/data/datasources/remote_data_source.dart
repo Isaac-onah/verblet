@@ -7,6 +7,7 @@ import 'package:verblet/features/home_page/data/blogmodel/blog_model.dart';
 abstract interface class BlogRemoteDataSource{
   Future<BlogModel> uploadBlog(BlogModel blog);
   Future<String> uploadBlogImage({required File image, required BlogModel blog});
+  Future<List<BlogModel>> getAllBlogs();
 }
 
 class  BlogRemoteDataSourceImplementation implements BlogRemoteDataSource{
@@ -27,6 +28,17 @@ class  BlogRemoteDataSourceImplementation implements BlogRemoteDataSource{
     try{
       await supabaseClient.storage.from('blog_images').upload(blog.id, image);
       return supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
+    }catch(e){
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<BlogModel>> getAllBlogs() async{
+    try{
+      final blogData = await supabaseClient.from('blogs').select();
+
+
     }catch(e){
       throw ServerException(e.toString());
     }

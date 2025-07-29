@@ -5,6 +5,7 @@ import 'package:verblet/core/common/cubits/app_user.dart';
 import 'package:verblet/core/theme/theme.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:verblet/features/auth/presentation/pages/login_page.dart';
+import 'package:verblet/features/home_page/presentation/blogbloc/blog_bloc.dart';
 import 'package:verblet/features/home_page/presentation/pages/home_screen.dart';
 import 'package:verblet/init_dependencies.dart';
 
@@ -14,7 +15,8 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
-      BlocProvider(create: (_) => serviceLocator<AuthBloc>())
+      BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
+      BlocProvider(create: (_) => serviceLocator<BlogBloc>())
     ],
     child: const MyApp(),
   ));

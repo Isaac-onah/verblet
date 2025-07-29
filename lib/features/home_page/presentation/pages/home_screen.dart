@@ -7,6 +7,7 @@ import 'package:verblet/features/home_page/presentation/widgets/article_list_ite
 import 'package:verblet/features/home_page/presentation/widgets/recomended_card.dart';
 
 class HomeScreen extends StatefulWidget {
+  static route() => MaterialPageRoute(builder: (context) => HomeScreen());
   const HomeScreen({super.key});
 
   @override
