@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
   },
 ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -197,31 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      backgroundColor:Theme.of(context).scaffoldBackgroundColor ,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Iconsax.home_2), label: 'Home'),
-        BottomNavigationBarItem(
-            icon: Icon(Iconsax.tag_2), label: 'Saved'),
-        BottomNavigationBarItem(
-            icon: Icon(Iconsax.profile_circle), label: 'Profile'),
-      ],
-      currentIndex: _bottomNavIndex,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      type: BottomNavigationBarType.fixed,
-      elevation: 2,
-      onTap: (index) {
-        setState(() {
-          _bottomNavIndex = index;
-        });
-        print(_bottomNavIndex);
-      },
-    );
-  }
   Widget _search(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

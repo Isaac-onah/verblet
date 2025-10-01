@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:verblet/core/common/image_text.dart';
@@ -8,10 +7,10 @@ import 'package:verblet/core/common/loader.dart';
 import 'package:verblet/core/common/snackbar.dart';
 import 'package:verblet/core/sizes.dart';
 import 'package:verblet/core/theme/app_pallete.dart';
+import 'package:verblet/features/appnavigator/main_navigator.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:verblet/features/auth/presentation/pages/signup_page.dart';
 import 'package:verblet/features/auth/presentation/widgets/auth_field.dart';
-import 'package:verblet/features/home_page/presentation/pages/home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => LoginPage());
@@ -47,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                   if(state is AuthFailure){
                     showSnackBar(context, 'Oops', state.message);
                   }else if(AuthState is AuthSuccess){
-                    Navigator.pushAndRemoveUntil(context, HomeScreen.route(), (route) => false);
+                    Navigator.pushAndRemoveUntil(context, mainNavigator.route(), (route) => false);
                   }
                 },
                 builder: (context, state) {

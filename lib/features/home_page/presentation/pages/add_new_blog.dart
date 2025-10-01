@@ -9,8 +9,8 @@ import 'package:verblet/core/common/loader.dart';
 import 'package:verblet/core/common/snackbar.dart';
 import 'package:verblet/core/device_utility.dart';
 import 'package:verblet/core/theme/app_pallete.dart';
+import 'package:verblet/features/appnavigator/main_navigator.dart';
 import 'package:verblet/features/home_page/presentation/blogbloc/blog_bloc.dart';
-import 'package:verblet/features/home_page/presentation/pages/home_screen.dart';
 import 'package:verblet/features/home_page/presentation/widgets/blog_editor.dart';
 
 class AddNewBlog extends StatefulWidget {
@@ -40,12 +40,8 @@ class _AddNewBlogState extends State<AddNewBlog> {
   }
 
   void nowUploadBlog () {
-    final posterId = (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
-    print('3. posterId from cubit: $posterId'); // Add this
     if(uploadFormKey.currentState!.validate() && selectedTopics.isNotEmpty && image != null){
       final posterId = (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
-      print('3. posterId from cubit: $posterId'); // Add this
-
       context.read<BlogBloc>().add(BlogUploadEvent(image: image!, title: titleController.text.trim(), content: contentController.text.trim(), posterId: posterId, topics: selectedTopics));
     }
   }
@@ -75,7 +71,7 @@ class _AddNewBlogState extends State<AddNewBlog> {
     if(state is BlogFailure){
       showSnackBar(context, 'Oops', state.error);
     }else if(state is BlogUploadSuccess){
-      Navigator.pushAndRemoveUntil(context, HomeScreen.route(), (route) => false);
+      Navigator.pushAndRemoveUntil(context, mainNavigator.route(), (route) => false);
     }
   },
   builder: (context, state) {

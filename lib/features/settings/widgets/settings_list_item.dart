@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:verblet/core/theme/app_pallete.dart';
 
 class SettingsListItem extends StatelessWidget {
   final IconData icon;
@@ -24,7 +25,7 @@ class SettingsListItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: MyColors.darkerGrey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(

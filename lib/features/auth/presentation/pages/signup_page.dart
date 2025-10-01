@@ -8,6 +8,7 @@ import 'package:verblet/core/common/loader.dart';
 import 'package:verblet/core/common/snackbar.dart';
 import 'package:verblet/core/sizes.dart';
 import 'package:verblet/core/theme/app_pallete.dart';
+import 'package:verblet/features/appnavigator/main_navigator.dart';
 import 'package:verblet/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:verblet/features/auth/presentation/pages/login_page.dart';
 import 'package:verblet/features/auth/presentation/widgets/auth_field.dart';
@@ -52,7 +53,7 @@ class _SignupPageState extends State<SignupPage> {
                if(state is AuthFailure){
                  showSnackBar(context, 'Oops', state.message);
                }else if(AuthState is AuthSuccess){
-                 Navigator.pushAndRemoveUntil(context, HomeScreen.route(), (route) => false);
+                 Navigator.pushAndRemoveUntil(context, mainNavigator.route(), (route) => false);
                }
               },
               builder: (context, state) {

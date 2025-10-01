@@ -9,12 +9,10 @@ abstract interface class AuthRemoteDataSource {
     required String email,
     required String password,
   });
-
   Future<UserModel> loginWithEmailPassword({
     required String email,
     required String password,
   });
-
   Future<UserModel?> getCurrentUserData();
 }
 
@@ -53,6 +51,8 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
         throw ServerException('user is null');
       }
       return UserModel.fromJson(response.user!.toJson());
+    }  on AuthException catch(e){
+      throw ServerException(e.message);
     }catch(e){
       throw ServerException(e.toString());
     }
@@ -69,6 +69,8 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
         throw ServerException('user is null');
       }
       return UserModel.fromJson(response.user!.toJson());
+    }  on AuthException catch(e){
+      throw ServerException(e.message);
     }catch(e){
       throw ServerException(e.toString());
     }

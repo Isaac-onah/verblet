@@ -1,12 +1,10 @@
 
 import 'package:fpdart/fpdart.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 import 'package:verblet/core/common/entities/user.dart';
 import 'package:verblet/core/error/exceptions.dart';
 import 'package:verblet/core/error/failures.dart';
 import 'package:verblet/core/network/connection_checker.dart';
 import 'package:verblet/features/auth/data/datasources/auth_supabase.dart';
-import 'package:verblet/features/auth/data/models/user_model.dart';
 import 'package:verblet/features/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImplementation implements AuthRepository{
@@ -51,8 +49,6 @@ final ConnectionChecker connectionChecker;
       }
       final user = await fn();
       return right(user);
-    } on sb.AuthException catch(e){
-      return Either.left(Failure(e.message));
     }on ServerException catch(e){
       return Either.left(Failure(e.message));
     }

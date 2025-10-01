@@ -8,14 +8,17 @@ class Loader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Lottie.asset(animation, width: MediaQuery.of(context).size.width * 0.8),
-          Text('You are been logged in ...',)
-        ],
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Lottie.asset(animation, width: MediaQuery.of(context).size.width * 0.8),
+            Text('You are been logged in ...',)
+          ],
+        ),
       ),
     );
   }
