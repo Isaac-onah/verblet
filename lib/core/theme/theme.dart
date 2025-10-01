@@ -18,7 +18,7 @@ class MyAppTheme{
     fontFamily: 'outfit',
     brightness: Brightness.light,
     primaryColor: MyColors.primary,
-    scaffoldBackgroundColor: MyColors.primaryBackground,
+    scaffoldBackgroundColor: Colors.white,
     textTheme: MyTextTheme.lightTextTheme,
     chipTheme: MyChipTheme.lightChipTheme,
     appBarTheme: MyAppBarTheme.lightAppBarTheme,
